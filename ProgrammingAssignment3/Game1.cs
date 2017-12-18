@@ -225,23 +225,19 @@ namespace ProgrammingAssignment3
             int velocityNumber = rand.Next(4);  // This would give 0,1,2,3
             if (velocityNumber == 0)
             {
-                // Changed to various speed(0.1~0.3) instead of 0.15 constant speed
-                return new Vector2(-(float)(0.2 * rand.NextDouble() + 0.1), -(float)(0.2 * rand.NextDouble() + 0.1));
+                return upLeft;
             }
             else if (velocityNumber == 1)
             {
-                // Changed to various speed(0.1~0.3) instead of 0.15 constant speed
-                return new Vector2(+(float)(0.2 * rand.NextDouble() + 0.1), -(float)(0.2 * rand.NextDouble() + 0.1));
+                return upRight;
             }
             else if (velocityNumber == 2)
             {
-                // Changed to various speed(0.1~0.3) instead of 0.15 constant speed
-                return new Vector2(+(float)(0.2 * rand.NextDouble() + 0.1), +(float)(0.2 * rand.NextDouble() + 0.1));
+                return downRight;
             }
             else
             {
-                // Changed to various speed(0.1~0.3) instead of 0.15 constant speed
-                return new Vector2(-(float)(0.2 * rand.NextDouble() + 0.1), +(float)(0.2 * rand.NextDouble() + 0.1));
+                return downLeft;
             }
 
             // STUDENTS: After completing the code above, delete the following line of code

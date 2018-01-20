@@ -76,16 +76,40 @@ namespace GameProject
         public void Update(GameTime gameTime, MouseState mouse)
         {
             // burger should only respond to input if it still has health
+            if (health > 0)
+            {
+                // move burger using mouse
+                int x = mouse.X, y = mouse.Y;
 
-            // move burger using mouse
+                // clamp burger in window
+                x = Math.Max(x, 0);
+                y = Math.Max(y, 0);
+                x = Math.Min(x, GameConstants.WindowWidth - drawRectangle.Width);
+                y = Math.Min(y, GameConstants.WindowHeight - drawRectangle.Height);
+                drawRectangle.X = x;
+                drawRectangle.Y = y;
 
-            // clamp burger in window
-
-            // update shooting allowed
-            // timer concept (for animations) introduced in Chapter 7
-
-            // shoot if appropriate
-
+                // update shooting allowed
+                // timer concept (for animations) introduced in Chapter 7
+                if (mouse.LeftButton == ButtonState.Pressed && canShoot)
+                {
+                    Projectile prj = new Projectile(ProjectileType.FrenchFries, Game1.GetProjectileSprite(ProjectileType.FrenchFries),
+                        drawRectangle.Center.X, drawRectangle.Center.Y + GameConstants.FrenchFriesProjectileOffset,
+                        -GameConstants.FrenchFriesProjectileSpeed);
+                    Game1.AddProjectile(prj);
+                    canShoot = false;
+                }
+                // shoot if appropriate
+                if (!canShoot)
+                {
+                    elapsedCooldownMilliseconds += gameTime.ElapsedGameTime.Milliseconds;
+                    if (elapsedCooldownMilliseconds > GameConstants.BurgerTotalCooldownMilliseconds || mouse.LeftButton == ButtonState.Released)
+                    {
+                        elapsedCooldownMilliseconds = 0;
+                        canShoot = true;
+                    }
+                }
+            }
         }
 
         /// <summary>

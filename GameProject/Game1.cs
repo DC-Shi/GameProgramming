@@ -126,6 +126,8 @@ namespace GameProject
                 Exit();
 
             // get current mouse state and update burger
+            MouseState mouse = Mouse.GetState();
+            burger.Update(gameTime, mouse);
 
             // update other game objects
             foreach (TeddyBear bear in bears)
@@ -200,7 +202,14 @@ namespace GameProject
         public static Texture2D GetProjectileSprite(ProjectileType type)
         {
             // replace with code to return correct projectile sprite based on projectile type
-            return frenchFriesSprite;
+            switch(type)
+            {
+                case ProjectileType.FrenchFries:
+                    return frenchFriesSprite;
+                case ProjectileType.TeddyBear:
+                    return teddyBearProjectileSprite;
+            }
+            return null;
         }
 
         /// <summary>
@@ -209,7 +218,7 @@ namespace GameProject
         /// <param name="projectile">the projectile to add</param>
         public static void AddProjectile(Projectile projectile)
         {
-
+            projectiles.Add(projectile);
         }
 
         #endregion

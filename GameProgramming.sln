@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameProject", "GameProject\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgrammingAssignment4", "ProgrammingAssignment4\ProgrammingAssignment4.csproj", "{A17B99D3-7556-4609-8CC9-A67474F2B8B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgrammingAssignment5", "ProgrammingAssignment5\ProgrammingAssignment5.csproj", "{77CF54EF-B410-4E77-97E1-3C614A3B85BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,12 @@ Global
 		{A17B99D3-7556-4609-8CC9-A67474F2B8B9}.Release|Any CPU.ActiveCfg = Release|x86
 		{A17B99D3-7556-4609-8CC9-A67474F2B8B9}.Release|x86.ActiveCfg = Release|x86
 		{A17B99D3-7556-4609-8CC9-A67474F2B8B9}.Release|x86.Build.0 = Release|x86
+		{77CF54EF-B410-4E77-97E1-3C614A3B85BA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{77CF54EF-B410-4E77-97E1-3C614A3B85BA}.Debug|x86.ActiveCfg = Debug|x86
+		{77CF54EF-B410-4E77-97E1-3C614A3B85BA}.Debug|x86.Build.0 = Debug|x86
+		{77CF54EF-B410-4E77-97E1-3C614A3B85BA}.Release|Any CPU.ActiveCfg = Release|x86
+		{77CF54EF-B410-4E77-97E1-3C614A3B85BA}.Release|x86.ActiveCfg = Release|x86
+		{77CF54EF-B410-4E77-97E1-3C614A3B85BA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

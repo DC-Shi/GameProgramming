@@ -169,7 +169,7 @@ namespace ProgrammingAssignment5
         /// <param name="gt">game time</param>
         private void SpawnBearAtMost3(GameTime gt)
         {
-            if (cooldown < 0 && bears.Count < 3)
+            if (cooldown < 0)
             {
                 // generate random velocity, do not generate static bears.
                 float x = 0, y = 0;

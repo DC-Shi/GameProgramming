@@ -24,6 +24,17 @@ namespace GameProject
 
         // burger stats
         int health = 100;
+        public int Health
+        {
+            get
+            {
+                return health;
+            }
+            set
+            {
+                health = value > 0 ? value : 0;
+            }
+        }
 
         // shooting support
         bool canShoot = true;

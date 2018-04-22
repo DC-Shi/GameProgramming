@@ -100,12 +100,14 @@ namespace GameProject
 
             // add initial game objects
             // Load burger here
-            burger = new Burger(Content, @"graphics\burger", GameConstants.WindowWidth / 2, GameConstants.WindowHeight * 7 / 8, null);
+            burger = new Burger(Content, @"graphics\burger", GameConstants.WindowWidth / 2, GameConstants.WindowHeight * 7 / 8, burgerShot);
 
             for (int i = 0; i < GameConstants.MaxBears; i++)
                 SpawnBear();
 
             // set initial health and score strings
+            healthString = GameConstants.HealthPrefix + burger.Health;
+            scoreString = GameConstants.ScorePrefix + score;
         }
 
         /// <summary>
@@ -129,7 +131,8 @@ namespace GameProject
 
             // get current mouse state and update burger
             MouseState mouse = Mouse.GetState();
-            burger.Update(gameTime, mouse);
+            KeyboardState key = Keyboard.GetState();
+            burger.Update(gameTime, key);
 
             // update other game objects
             foreach (TeddyBear bear in bears)
@@ -173,6 +176,7 @@ namespace GameProject
                                 bears[j].DrawRectangle = cri.SecondDrawRectangle;
                                 bears[j].Velocity = cri.SecondVelocity;
                             }
+                            teddyBounce.Play();
                         }
                     }
                 }
@@ -190,6 +194,12 @@ namespace GameProject
                         // Explode!
                         Explosion e = new Explosion(explosionSpriteStrip, collisionBear.Location.X, collisionBear.Location.Y);
                         explosions.Add(e);
+                        explosion.Play();
+                        // Set burger health string
+                        healthString = GameConstants.HealthPrefix + burger.Health;
+                        // Sound!
+                        burgerDamage.Play();
+                        CheckBurgerKill();
                     }
                 }
             }
@@ -203,6 +213,10 @@ namespace GameProject
                     {
                         burger.Health -= GameConstants.TeddyBearProjectileDamage;
                         projectile.Active = false;
+                        // Set burger health string
+                        healthString = GameConstants.HealthPrefix + burger.Health;
+                        // Sound!
+                        burgerDamage.Play();
                     }
                 }
             }
@@ -219,6 +233,11 @@ namespace GameProject
                         // Explode!
                         Explosion e = new Explosion(explosionSpriteStrip, bear.Location.X, bear.Location.Y);
                         explosions.Add(e);
+                        explosion.Play();
+
+                        // Update score
+                        score += GameConstants.BearPoints;
+                        scoreString = GameConstants.ScorePrefix + score;
                     }
                 }
             }
@@ -280,6 +299,8 @@ namespace GameProject
             }
 
             // draw score and health
+            spriteBatch.DrawString(font, healthString, GameConstants.HealthLocation, Color.White);
+            spriteBatch.DrawString(font, scoreString, GameConstants.ScoreLocation, Color.White);
 
             spriteBatch.End();
 
@@ -334,14 +355,14 @@ namespace GameProject
             Vector2 velocity = new Vector2((float)(v * Math.Cos(angle)), (float)(v * Math.Sin(angle)));
 
             // create new bear
-            TeddyBear newBear = new TeddyBear(Content, @"graphics\teddybear", x, y, velocity, null, null);
+            TeddyBear newBear = new TeddyBear(Content, @"graphics\teddybear", x, y, velocity, teddyBounce, teddyShot);
 
             // make sure we don't spawn into a collision
             while (!CollisionUtils.IsCollisionFree(newBear.CollisionRectangle, GetCollisionRectangles()))
             {
                 x = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowWidth - GameConstants.SpawnBorderSize);
                 y = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowHeight - GameConstants.SpawnBorderSize);
-                newBear = new TeddyBear(Content, @"graphics\teddybear", x, y, velocity, null, null);
+                newBear = new TeddyBear(Content, @"graphics\teddybear", x, y, velocity, teddyBounce, teddyShot);
             }
 
             // add new bear to list
@@ -388,7 +409,11 @@ namespace GameProject
         /// </summary>
         private void CheckBurgerKill()
         {
-
+            if (burger.Health == 0 && !burgerDead)
+            {
+                burgerDead = true;
+                burgerDeath.Play();
+            }
         }
 
         #endregion

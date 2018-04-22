@@ -84,7 +84,7 @@ namespace GameProject
         /// </summary>
         /// <param name="gameTime">game time</param>
         /// <param name="mouse">the current state of the mouse</param>
-        public void Update(GameTime gameTime, MouseState mouse)
+        public void Update_mouse(GameTime gameTime, MouseState mouse)
         {
             // burger should only respond to input if it still has health
             if (health > 0)
@@ -115,6 +115,58 @@ namespace GameProject
                 {
                     elapsedCooldownMilliseconds += gameTime.ElapsedGameTime.Milliseconds;
                     if (elapsedCooldownMilliseconds > GameConstants.BurgerTotalCooldownMilliseconds || mouse.LeftButton == ButtonState.Released)
+                    {
+                        elapsedCooldownMilliseconds = 0;
+                        canShoot = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates the burger's location based on keyboard WSAD. Also fires 
+        /// french fries as appropriate
+        /// </summary>
+        /// <param name="gameTime">game time</param>
+        /// <param name="mouse">the current state of the mouse</param>
+        public void Update(GameTime gameTime, KeyboardState key)
+        {
+            // burger should only respond to input if it still has health
+            if (health > 0)
+            {
+                // move burger using mouse
+                int x , y ;
+
+                // clamp burger in window
+                x = key.IsKeyDown(Keys.A) ? -GameConstants.BurgerMovementAmount : 0;
+                x = key.IsKeyDown(Keys.D) ? +GameConstants.BurgerMovementAmount : x;
+                y = key.IsKeyDown(Keys.W) ? -GameConstants.BurgerMovementAmount : 0;
+                y = key.IsKeyDown(Keys.S) ? +GameConstants.BurgerMovementAmount : y;
+                x += drawRectangle.X;
+                y += drawRectangle.Y;
+                x = Math.Max(x, 0);
+                y = Math.Max(y, 0);
+                x = Math.Min(x, GameConstants.WindowWidth - drawRectangle.Width);
+                y = Math.Min(y, GameConstants.WindowHeight - drawRectangle.Height);
+                drawRectangle.X = x;
+                drawRectangle.Y = y;
+
+                // update shooting allowed
+                // timer concept (for animations) introduced in Chapter 7
+                if (key.IsKeyDown(Keys.Space) && canShoot)
+                {
+                    Projectile prj = new Projectile(ProjectileType.FrenchFries, Game1.GetProjectileSprite(ProjectileType.FrenchFries),
+                        drawRectangle.Center.X, drawRectangle.Center.Y + GameConstants.FrenchFriesProjectileOffset,
+                        -GameConstants.FrenchFriesProjectileSpeed);
+                    Game1.AddProjectile(prj);
+                    canShoot = false;
+                    shootSound.Play();
+                }
+                // shoot if appropriate
+                if (!canShoot)
+                {
+                    elapsedCooldownMilliseconds += gameTime.ElapsedGameTime.Milliseconds;
+                    if (elapsedCooldownMilliseconds > GameConstants.BurgerTotalCooldownMilliseconds || key.IsKeyUp(Keys.Space))
                     {
                         elapsedCooldownMilliseconds = 0;
                         canShoot = true;
